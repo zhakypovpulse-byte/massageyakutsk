@@ -194,6 +194,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
   const root = document.documentElement;
   const header = document.getElementById("header");
   const mbar = document.getElementById("mbar");
+  const fab = document.getElementById("fab");
   const hero = document.querySelector(".hero");
   const heroPar = document.getElementById("heroParallax");
   const heroContent = document.getElementById("heroContent");
@@ -209,6 +210,16 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
   const fTexts = [...film.querySelectorAll(".film__text")];
   const n = fImgs.length;
 
+  // Если на экране уже видна большая кнопка записи — панель уходит, чтобы не было двух кнопок сразу
+  let ctaInView = false;
+  const ctaSeen = new Set();
+  const ctaIO = new IntersectionObserver((entries) => {
+    entries.forEach((e) => (e.isIntersecting ? ctaSeen.add(e.target) : ctaSeen.delete(e.target)));
+    ctaInView = ctaSeen.size > 0;
+    request();
+  }, { rootMargin: "0px 0px -90px 0px" });
+  document.querySelectorAll(".offer .btn, .reels__cta .btn").forEach((b) => ctaIO.observe(b));
+
   let ticking = false;
 
   const frame = () => {
@@ -220,8 +231,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
 
     // Нижняя панель: после главного экрана, но не поверх контактов и меню
     const cRect = contacts.getBoundingClientRect();
-    const showBar = y > hero.offsetHeight * 0.55 && cRect.top > vh * 0.75 && !nav.classList.contains("is-open");
+    const showBar = y > hero.offsetHeight * 0.55 && cRect.top > vh * 0.75 && !ctaInView && !nav.classList.contains("is-open");
     mbar.classList.toggle("is-show", showBar);
+    fab.classList.toggle("is-show", showBar);
 
     if (reduceMotion) return;
 

@@ -26,9 +26,7 @@
   <!-- [ЗАМЕНИТЬ] код подтверждения из Яндекс.Вебмастера -->
   <!-- <meta name="yandex-verification" content="XXXXXXXX"> -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%22-4%20-2%2048%2052%22%3E%3Crect%20x%3D%22-4%22%20y%3D%22-2%22%20width%3D%2248%22%20height%3D%2252%22%20rx%3D%2210%22%20fill%3D%22%2316120f%22/%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23c8915a%22%20stroke-width%3D%222.4%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M20%204V0.8%22/%3E%3Cpath%20d%3D%22M20%201.2l3%201.1-3%201.1%22/%3E%3Cpath%20d%3D%22M16%207.6L20%203.8l4%203.8%22/%3E%3Cpath%20d%3D%22M17%207.6h6v3.6h-6z%22/%3E%3Cpath%20d%3D%22M20%2011.2L7%2022h26z%22/%3E%3Cpath%20d%3D%22M6%2022h28v6.5H6z%22/%3E%3Cpath%20d%3D%22M10.5%2025.2h3M18.5%2025.2h3M26.5%2025.2h3%22/%3E%3Cpath%20d%3D%22M9%2028.5h22V46H9z%22/%3E%3Cpath%20d%3D%22M9%2032.8h8M23%2032.8h8M9%2037.2h8M23%2037.2h8M9%2041.6h8M23%2041.6h8%22/%3E%3Cpath%20d%3D%22M17%2046v-9a3%203%200%200%201%206%200v9%22/%3E%3Cpath%20d%3D%22M3%2046h34%22/%3E%3C/g%3E%3C/svg%3E">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600;1,700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="fonts/fonts.css">
   <link rel="preload" as="image" href="video/hero-poster.jpg">
   <link rel="stylesheet" href="style.css">
 
@@ -251,6 +249,22 @@
       },
       {
         "@type": "Question",
+        "name": "Будет ли больно?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Нет, если вы этого не хотите. Силу нажима мастер подбирает вместе с вами и уточняет самочувствие во время сеанса. Скажите «мягче» в любой момент."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Есть ли противопоказания?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Да. Массаж не делают при температуре, острых воспалениях, свежих травмах и высыпаниях на коже в зоне массажа. При беременности, хронических заболеваниях и после операций сначала посоветуйтесь с врачом и предупредите администратора. Мы делаем оздоровительный массаж, это не медицинская помощь."
+        }
+      },
+      {
+        "@type": "Question",
         "name": "Сколько длится сеанс?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -276,11 +290,11 @@
   <header class="header" id="header">
     <a class="logo" href="#top" aria-label="Массаж.якт — на главную"><svg class="logo__mark" viewBox="0 0 40 48" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M20 4V0.8"/><path d="M20 1.2l3 1.1-3 1.1"/><path d="M16 7.6L20 3.8l4 3.8"/><path d="M17 7.6h6v3.6h-6z"/><path d="M20 11.2L7 22h26z"/><path d="M6 22h28v6.5H6z"/><path d="M10.5 25.2h3M18.5 25.2h3M26.5 25.2h3"/><path d="M9 28.5h22V46H9z"/><path d="M9 32.8h8M23 32.8h8M9 37.2h8M23 37.2h8M9 41.6h8M23 41.6h8"/><path d="M17 46v-9a3 3 0 0 1 6 0v9"/><path d="M3 46h34"/></svg><b class="logo__text">Массаж<span>.якт</span></b></a>
     <nav class="nav" id="nav" aria-label="Основное меню">
-      <a href="#story">История</a>
-      <a href="#offers">Предложения</a>
+      <a href="#offers">Первый визит</a>
       <a href="#services">Услуги и цены</a>
-      <a href="#video">Видео</a>
       <a href="#masters">Мастера</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#video">Видео</a>
       <a href="#contacts">Контакты</a>
       <a class="btn nav__cta js-wa" href="#" data-msg="Здравствуйте! Хочу записаться на массаж.">Записаться в WhatsApp</a>
     </nav>
@@ -300,7 +314,7 @@
 
       <!-- Тексты главного экрана сменяют друг друга поверх видео -->
       <div class="hero__data" hidden>
-        <span class="hero__slide is-active" data-title="Массаж в Якутске, после которого телу легко" data-text="Снимаем зажимы в шее, плечах и спине. Вы выходите и чувствуете: стало свободно."></span>
+        <span class="hero__slide is-active" data-title="Массаж в Якутске, после которого телу легко" data-text="Шея, плечи, спина: мастер находит, где засело напряжение, и работает именно там. Вы выходите с лёгкостью в теле."></span>
         <span class="hero__slide" data-title="60 минут, которые вы забираете себе" data-text="Тишина, мягкий свет, тёплые руки мастера. Телефон можно оставить на ресепшене."></span>
         <span class="hero__slide" data-title="Мастера, которые чувствуют тело" data-text="7 мастеров. Каждого учили не только технике, но и тому, как услышать, где у вас напряжение."></span>
         <span class="hero__slide" data-title="Запись за одну минуту" data-text="Нажмите «Записаться», откроется WhatsApp. Мы подберём мастера и удобное время."></span>
@@ -314,7 +328,7 @@
           <span class="temp__warm">у нас тепло</span>
         </p>
         <h1 class="hero__title" id="heroTitle">Массаж в Якутске, после которого телу легко</h1>
-        <p class="hero__text" id="heroText">Снимаем зажимы в шее, плечах и спине. Вы выходите и чувствуете: стало свободно.</p>
+        <p class="hero__text" id="heroText">Шея, плечи, спина: мастер находит, где засело напряжение, и работает именно там. Вы выходите с лёгкостью в теле.</p>
         <div class="hero__actions">
           <a class="btn js-wa" href="#" data-msg="Здравствуйте! Хочу записаться на массаж.">Записаться в WhatsApp</a>
           <a class="btn btn--ghost" href="#services">Услуги и цены</a>
@@ -349,9 +363,9 @@
           <span class="offer__tag">Первый визит</span>
           <h3>Перезагрузка спины за 60 минут</h3>
           <p class="offer__who">Для тех, кто сидит за компьютером и к вечеру не чувствует шею.</p>
-          <ul class="offer__list"><li><span>Оздоровительный массаж</span><b>60 мин</b></li><li><span>«Карта напряжения»: где зажимы и откуда</span><b>входит</b></li><li><span>Упражнение на 3 минуты для офиса</span><b>входит</b></li></ul>
-          <div class="offer__price"><s>3 500 ₽</s><b>3 100 ₽</b></div>
-          <p class="offer__note">Цена для первого визита в салон.</p>
+          <ul class="offer__list"><li><span>Оздоровительный массаж</span><b>60 мин</b></li><li><span>«Карта напряжения»: где копится напряжение и почему</span><b>входит</b></li><li><span>Упражнение на 3 минуты для офиса</span><b>входит</b></li></ul>
+          <div class="offer__price"><b>3 100 ₽</b></div>
+          <p class="offer__note">По цене обычного сеанса. «Карта напряжения» и упражнение — подарок к первому визиту.</p>
           <a class="btn js-wa" href="#" data-msg="Здравствуйте! Хочу «Перезагрузку спины» — первый визит." data-src="оффер">Записаться за 3 100 ₽</a>
         </article>
       </div>
@@ -416,11 +430,11 @@
         </article>
         <article class="card reveal">
           <h3>Лёгкость с первого визита</h3>
-          <p>Большинство клиентов отмечают после сеанса, что шея поворачивается свободнее, а плечи опускаются.</p>
+          <p>Это не наши слова: в 421 отзыве в 2GIS клиенты чаще всего пишут про расслабление, лёгкость в плечах и «тёплые руки».</p>
         </article>
         <article class="card reveal">
           <h3>Время под занятых людей</h3>
-          <p>Утром до работы, в обед или вечером. Пишете в WhatsApp, и через пару минут у вас есть время и мастер.</p>
+          <p>Ежедневно с 10:00 до 21:00: в обед, после работы или в выходной. Пишете в WhatsApp, администратор подберёт мастера и время.</p>
         </article>
         <article class="card reveal">
           <h3>Чистота и тепло</h3>
@@ -508,7 +522,7 @@
           <div class="service__img"><img src="img/massazh-litsa-yakutsk-sm.jpg" alt="Массаж лица в Якутске — Массаж.якт" loading="lazy" decoding="async"></div>
           <div class="service__body">
             <h3>Массаж лица</h3>
-            <p>Подтягивает овал лица, разглаживает мелкие морщинки и освежает цвет кожи.</p>
+            <p>Мягкий массаж лица и шеи. Мимика расслабляется, лицо выглядит отдохнувшим.</p>
             <ul class="service__prices"><li><span>60 мин</span><b>2 800 ₽</b></li></ul>
             <a class="btn btn--line js-wa" href="#" data-msg="Здравствуйте! Хочу записаться на массаж лица.">Записаться на этот массаж</a>
           </div>
@@ -530,7 +544,7 @@
         <ul class="addons__list">
           <li><div><h4>Массаж стоп</h4><p>Лёгкость после дня на ногах</p></div><span>15 мин</span><b>700 ₽</b></li>
           <li><div><h4>Массаж рук</h4><p>Для кистей после работы за компьютером</p></div><span>15 мин</span><b>700 ₽</b></li>
-          <li><div><h4>Баночный массаж</h4><p>Банки на спину снимают мышечное напряжение</p></div><span>15 мин</span><b>700 ₽</b></li>
+          <li><div><h4>Баночный массаж</h4><p>Глубокая проработка спины для тех, кто любит посильнее</p></div><span>15 мин</span><b>700 ₽</b></li>
           <li><div><h4>Массаж головы</h4><p>Помогает расслабиться и отвлечься</p></div><span>15 мин</span><b>700 ₽</b></li>
           <li><div><h4>Шейно-воротниковая зона</h4><p>Для тех, у кого «каменные» плечи</p></div><span>25 мин</span><b>1 800 ₽</b></li>
         </ul>
@@ -546,7 +560,7 @@
       <div class="reels__toggle-wrap"><button class="reels__toggle" type="button" aria-expanded="false" aria-controls="reelsDrawer"><span class="reels__toggle-play" aria-hidden="true"></span><span class="reels__toggle-text">Смотреть, как проходит сеанс</span><span class="reels__toggle-icon" aria-hidden="true"></span></button></div>
       <div class="reels__drawer" id="reelsDrawer" inert><div class="reels__drawer-inner">
       <div class="reels__rail" id="reels" data-lenis-prevent-horizontal>
-        <figure class="reel"><video muted playsinline loop preload="none" poster="video/spina.jpg" data-src="video/spina.mp4" aria-label="Массаж спины и шеи"></video><figcaption><b>Спина и шея</b><span>Убираем «каменные» плечи</span></figcaption></figure>
+        <figure class="reel"><video muted playsinline loop preload="none" poster="video/spina.jpg" data-src="video/spina.mp4" aria-label="Массаж спины и шеи"></video><figcaption><b>Спина и шея</b><span>Когда плечи «каменные»</span></figcaption></figure>
         <figure class="reel"><video muted playsinline loop preload="none" poster="video/glubokiy.jpg" data-src="video/glubokiy.mp4" aria-label="Глубокая проработка спины"></video><figcaption><b>Глубокая проработка</b><span>Сильно и по делу</span></figcaption></figure>
         <figure class="reel"><video muted playsinline loop preload="none" poster="video/stopy.jpg" data-src="video/stopy.mp4" aria-label="Массаж стоп"></video><figcaption><b>Стопы и ноги</b><span>Лёгкость после дня на ногах</span></figcaption></figure>
         <figure class="reel"><video muted playsinline loop preload="none" poster="video/master.jpg" data-src="video/master.mp4" aria-label="Мастер салона за работой"></video><figcaption><b>Наши мастера</b><span>У каждого своя сильная сторона</span></figcaption></figure>
@@ -574,13 +588,21 @@
     </section>
 
     <!-- ===== ОТЗЫВЫ ===== -->
-    <section class="reviews">
+    <section class="reviews" id="reviews">
       <h2 class="section-title">Что говорят<br><em>клиенты</em></h2>
-      <div class="reviews__grid reviews__grid--one">
-        <div class="review review--score reveal">
-          <p><b class="review__num">5,0</b> в 2GIS — 564 оценки и больше 420 отзывов (по данным 2GIS на 21.10.2026).</p>
-          <a class="btn btn--line" href="https://2gis.ru/yakutsk/firm/70000001106117834/tab/reviews" target="_blank" rel="noopener">Читать отзывы в 2GIS</a>
-        </div>
+      <div class="reviews__score reveal">
+        <b class="review__num">5,0</b>
+        <p>средняя оценка в 2GIS, 421 отзыв<br><small>по данным 2GIS на 23.10.2026</small></p>
+        <a class="btn btn--line" href="https://2gis.ru/yakutsk/firm/70000001106117834/tab/reviews" target="_blank" rel="noopener">Читать все отзывы в 2GIS</a>
+      </div>
+      <!-- Цитаты из открытых отзывов 2GIS, сокращены без изменения смысла. Без отзывов о «лечении» и «прошедшей боли» -->
+      <div class="reviews__grid" data-lenis-prevent-horizontal>
+        <blockquote class="review reveal"><p>«Выбрала оздоровительный, думала будет болезненно, но, к моему удивлению, боли практически не было, при этом тело полностью расслабилось. Отдохнула и душой, и телом!»</p><cite>Роксана Р. · 2GIS, август 2026</cite></blockquote>
+        <blockquote class="review reveal"><p>«Эффект ощутила сразу: исчезло привычное напряжение в плечах, спина стала мягче и подвижнее».</p><cite>Любовь · 2GIS, декабрь 2025</cite></blockquote>
+        <blockquote class="review reveal"><p>«Видно, что опыт есть: в начале уточнили про травмы, предложили на выбор аромамасла, спросили, каким зонам уделить внимание. Супер отдохнули».</p><cite>Степанида П. · 2GIS, январь 2026</cite></blockquote>
+        <blockquote class="review reveal"><p>«Мастер на протяжении всего массажа уточнял моё самочувствие — это очень важно. После массажа милая девушка предложила чай».</p><cite>Людмила В. · 2GIS, июль 2026</cite></blockquote>
+        <blockquote class="review reveal"><p>«Какие тёплые, мягкие и в то же время сильные руки у Нюргустаны. Так хорошо отдохнула сегодня у вас».</p><cite>Лилия Н. · 2GIS, сентябрь 2026</cite></blockquote>
+        <blockquote class="review reveal"><p>«Вежливый персонал, быстро отвечают. Можно выпить чай или кофе. Предлагают полежать пару минут после массажа и спокойно собраться».</p><cite>Анастасия Г. · 2GIS, май 2025</cite></blockquote>
       </div>
     </section>
 
@@ -591,7 +613,7 @@
         <p><b>Массаж.якт</b> (Massage.ykt) — массажный салон в Якутске на улице Каландаришвили, 27, в Октябрьском округе. Работаем с 2019 года. У нас 7 мастеров, рейтинг 5,0 в 2GIS по 564 оценкам и больше 420 отзывов клиентов.</p>
         <p>Делаем <a href="#services">расслабляющий массаж</a>, оздоровительный массаж спины и шеи, спортивный, лимфодренажный, антицеллюлитный массаж, массаж живота и лица, а также массаж шейно-воротниковой зоны, стоп, рук и головы.</p>
         <p>Много сидите за компьютером и к вечеру тянет шею и плечи — начните с оздоровительного массажа или шейно-воротниковой зоны. После тренировок подойдёт спортивный массаж. Хочется выдохнуть и выспаться — расслабляющий. Для лёгкости в ногах — лимфодренажный и антицеллюлитный.</p>
-        <p>Цены на массаж в Якутске у нас от 2 100 ₽ за 30 минут, сеанс 60 минут — от 2 800 ₽, дополнения — от 700 ₽. Запись в WhatsApp занимает минуту: подберём мастера и время под ваш график — утром до работы, в обед или вечером.</p>
+        <p>Цены на массаж в Якутске у нас от 2 100 ₽ за 30 минут, сеанс 60 минут — от 2 800 ₽, дополнения — от 700 ₽. Запись в WhatsApp занимает минуту: подберём мастера и время под ваш график — ежедневно с 10:00 до 21:00.</p>
       </div>
     </section>
 
@@ -602,6 +624,8 @@
       <details class="faq__item"><summary>Сколько стоит массаж в Якутске в вашем салоне?</summary><p>Сеанс 30 минут — от 2 100 ₽, 60 минут — от 2 800 ₽, 90 минут — от 4 200 ₽. Дополнения к массажу — от 700 ₽. Все цены в разделе «Услуги и цены».</p></details>
       <details class="faq__item"><summary>Где находится салон?</summary><p>Якутск, ул. Каландаришвили, 27, 1 этаж (Октябрьский округ). Работаем по записи.</p></details>
       <details class="faq__item"><summary>Какой массаж выбрать, если к вечеру устаёт шея от компьютера?</summary><p>Чаще всего подходит оздоровительный массаж или массаж шейно-воротниковой зоны. Мастер спросит, где именно напряжение, и подберёт технику и силу нажима.</p></details>
+      <details class="faq__item"><summary>Будет ли больно?</summary><p>Нет, если вы этого не хотите. Силу нажима мастер подбирает вместе с вами и уточняет самочувствие во время сеанса. Скажите «мягче» в любой момент.</p></details>
+      <details class="faq__item"><summary>Есть ли противопоказания?</summary><p>Да. Массаж не делают при температуре, острых воспалениях, свежих травмах и высыпаниях на коже в зоне массажа. При беременности, хронических заболеваниях и после операций сначала посоветуйтесь с врачом и предупредите администратора. Мы делаем оздоровительный массаж, это не медицинская помощь.</p></details>
       <details class="faq__item"><summary>Сколько длится сеанс?</summary><p>От 30 до 90 минут в зависимости от программы. Плюс 10 минут на знакомство с мастером.</p></details>
       <details class="faq__item"><summary>Нужно ли что-то брать с собой?</summary><p>Нет. Полотенца, масла и чай есть в салоне.</p></details>
     </section>
@@ -635,11 +659,25 @@
 
   <!-- Нижняя панель записи на телефоне -->
   <div class="mbar" id="mbar">
-    <a class="mbar__btn js-wa" href="#" data-msg="Здравствуйте! Хочу записаться на массаж.">
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3c.2-.5.2-1 .2-1.1-.1-.1-.2-.2-.4-.3Z"/></svg>
-      Записаться в WhatsApp
+    <a class="mbar__btn js-wa" href="#" data-src="панель" data-msg="Здравствуйте! Хочу записаться на массаж.">
+      <span class="mbar__ico"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3c.2-.5.2-1 .2-1.1-.1-.1-.2-.2-.4-.3Z"/></svg></span>
+      <span class="mbar__txt"><b>Записаться</b><small>в WhatsApp · за 1 минуту</small></span>
     </a>
-    <a class="mbar__link" href="#services">Цены</a>
+    <a class="mbar__round" href="#services" aria-label="Услуги и цены"><span aria-hidden="true">₽</span><small>Цены</small></a>
+    <a class="mbar__round" href="https://2gis.ru/yakutsk/firm/70000001106117834" target="_blank" rel="noopener" aria-label="Открыть салон в 2GIS"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 21.5s-6.5-6-6.5-11.2A6.5 6.5 0 0 1 12 3.8a6.5 6.5 0 0 1 6.5 6.5c0 5.2-6.5 11.2-6.5 11.2Z"/><circle cx="12" cy="10.3" r="2.4" fill="currentColor"/></svg><small>2GIS</small></a>
+  </div>
+
+  <!-- Плавающие кнопки сбоку: WhatsApp и 2GIS -->
+  <div class="fab" id="fab">
+    <a class="fab__btn fab__btn--2gis" href="https://2gis.ru/yakutsk/firm/70000001106117834" target="_blank" rel="noopener" aria-label="Открыть салон в 2GIS">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" d="M12 21.5s-6.5-6-6.5-11.2A6.5 6.5 0 0 1 12 3.8a6.5 6.5 0 0 1 6.5 6.5c0 5.2-6.5 11.2-6.5 11.2Z"/><circle cx="12" cy="10.3" r="2.4" fill="currentColor"/></svg>
+      <b class="fab__mark" aria-hidden="true">2GIS</b>
+      <span class="fab__label">Мы в 2GIS · 5,0</span>
+    </a>
+    <a class="fab__btn fab__btn--wa js-wa" href="#" data-src="кнопка сбоку" data-msg="Здравствуйте! Хочу записаться на массаж." aria-label="Записаться в WhatsApp">
+      <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3c.2-.5.2-1 .2-1.1-.1-.1-.2-.2-.4-.3Z"/></svg>
+      <span class="fab__label">Записаться в WhatsApp</span>
+    </a>
   </div>
 
   <script src="js/lenis.min.js" defer></script>
