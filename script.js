@@ -199,6 +199,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
   const heroPar = document.getElementById("heroParallax");
   const heroContent = document.getElementById("heroContent");
   const heroControls = document.querySelector(".hero__controls");
+  const frostEl = document.getElementById("frost");
   const contacts = document.getElementById("contacts");
   const contactsImg = document.querySelector(".contacts__bg img");
   const reelsBox = document.getElementById("reels");
@@ -218,7 +219,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
     ctaInView = ctaSeen.size > 0;
     request();
   }, { rootMargin: "0px 0px -90px 0px" });
-  document.querySelectorAll(".offer .btn, .reels__cta .btn").forEach((b) => ctaIO.observe(b));
+  document.querySelectorAll(".offer .btn, .reels__cta .btn, .zmap__btn").forEach((b) => ctaIO.observe(b));
 
   let ticking = false;
 
@@ -243,6 +244,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
       heroPar.style.setProperty("--hp", hp.toFixed(4));
       heroContent.style.setProperty("--hp", hp.toFixed(4));
       heroControls.style.setProperty("--hp", hp.toFixed(4));
+      frostEl?.style.setProperty("--hp", hp.toFixed(4));
     }
 
     // История: кадры перетекают друг в друга, холод сменяется теплом
@@ -460,3 +462,160 @@ document.querySelectorAll(".master__flip").forEach((btn) => {
     btn.setAttribute("aria-pressed", String(on));
   });
 });
+
+/* ===== «Оттаять»: иней на стекле главного экрана ===== */
+(() => {
+  const cv = document.getElementById("frost");
+  const hint = document.getElementById("frostHint");
+  const hero = document.querySelector(".hero");
+  const month = new Date().getMonth(); // 0 — январь
+  const winter = month >= 9 || month <= 3; // октябрь–апрель
+  if (!cv || !winter || reduceMotion || saveData) return;
+
+  const ctx = cv.getContext("2d");
+  const scale = isPhone() ? 0.5 : 0.6; // рисуем в пониженном разрешении: дёшево и мягче
+  let W = 0, H = 0;
+
+  // Кристалл: ветка, от которой расходятся боковые иголки
+  const branch = (x, y, ang, len, depth) => {
+    const x2 = x + Math.cos(ang) * len, y2 = y + Math.sin(ang) * len;
+    ctx.lineWidth = Math.max(0.6, depth * 0.7);
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x2, y2); ctx.stroke();
+    if (depth <= 0 || len < 4) return;
+    const steps = 3 + (Math.random() * 3) | 0;
+    for (let i = 1; i <= steps; i++) {
+      const t = i / (steps + 1), bx = x + (x2 - x) * t, by = y + (y2 - y) * t, l = len * (0.28 + Math.random() * 0.22);
+      branch(bx, by, ang + 0.9 + Math.random() * 0.3, l, depth - 1);
+      branch(bx, by, ang - 0.9 - Math.random() * 0.3, l, depth - 1);
+    }
+  };
+
+  const paint = () => {
+    cv.classList.add("is-on"); // сначала показать, иначе размер холста = 0
+    W = cv.width = Math.round(cv.clientWidth * scale);
+    H = cv.height = Math.round(cv.clientHeight * scale);
+    ctx.globalCompositeOperation = "source-over";
+    ctx.clearRect(0, 0, W, H);
+    // матовая дымка
+    const g = ctx.createRadialGradient(W * 0.34, H * 0.66, Math.min(W, H) * 0.2, W * 0.5, H * 0.5, Math.max(W, H) * 0.75);
+    g.addColorStop(0, "rgba(200,222,236,0)"); g.addColorStop(1, "rgba(214,232,244,.30)");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    // изморось
+    for (let i = 0; i < (W * H) / 90; i++) {
+      ctx.fillStyle = `rgba(236,246,255,${(Math.random() * 0.35).toFixed(2)})`;
+      ctx.fillRect(Math.random() * W, Math.random() * H, 1, 1);
+    }
+    // узоры растут от краёв стекла внутрь
+    ctx.strokeStyle = "rgba(238,247,255,.24)"; ctx.lineCap = "round";
+    const n = isPhone() ? 18 : 22;
+    for (let i = 0; i < n; i++) {
+      const side = i % 4, r = Math.random();
+      const x = side === 0 ? r * W : side === 1 ? W : side === 2 ? r * W : 0;
+      const y = side === 0 ? 0 : side === 1 ? r * H : side === 2 ? H : r * H;
+      const inward = Math.atan2(H * 0.55 - y, W * 0.4 - x) + (Math.random() - 0.5) * 0.9;
+      branch(x, y, inward, Math.min(W, H) * (0.10 + Math.random() * 0.12), 3);
+    }
+  };
+
+  // Стираем иней: мягкая кисть «вырезает» узор
+  let wiped = 0;
+  const wipe = (cx, cy) => {
+    const r = cv.getBoundingClientRect();
+    const x = (cx - r.left) * scale, y = (cy - r.top) * scale, R = (isPhone() ? 46 : 64) * scale;
+    ctx.globalCompositeOperation = "destination-out";
+    const b = ctx.createRadialGradient(x, y, 0, x, y, R);
+    b.addColorStop(0, "rgba(0,0,0,.9)"); b.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = b; ctx.beginPath(); ctx.arc(x, y, R, 0, Math.PI * 2); ctx.fill();
+    if (++wiped === 12) hint.classList.remove("is-in");
+  };
+  hero.addEventListener("pointermove", (e) => { if (e.pointerType === "mouse") wipe(e.clientX, e.clientY); }, { passive: true });
+  hero.addEventListener("touchmove", (e) => { for (const t of e.touches) wipe(t.clientX, t.clientY); }, { passive: true });
+  hero.addEventListener("touchstart", (e) => { for (const t of e.touches) wipe(t.clientX, t.clientY); }, { passive: true });
+
+  const start = () => {
+    paint();
+    setTimeout(() => hint.classList.add("is-in"), 1800);
+    setTimeout(() => hint.classList.remove("is-in"), 9000);
+  };
+  // после загрузки страницы, чтобы не мешать видео и первому экрану
+  if (document.readyState === "complete") start(); else window.addEventListener("load", start, { once: true });
+  let rw; window.addEventListener("resize", () => { clearTimeout(rw); rw = setTimeout(paint, 300); });
+})();
+
+/* ===== Карта напряжения: зоны → время, цена, текст в WhatsApp ===== */
+(() => {
+  const box = document.getElementById("zones");
+  if (!box) return;
+  // Правила от Ислама 24.10.2026: основная зона — 30 мин, две и больше — всё тело 60 мин;
+  // голова и стопы — допы по +15 мин; голова и лицо без тела — отдельная услуга (массаж лица)
+  const ZONES = {
+    full:  { name: "всё тело",                text: "Всё тело, кроме головы и стоп — 60 минут: шея и плечи, спина, руки, ноги." },
+    shvz:  { name: "шейно-воротниковая зона", text: "Шея, воротниковая зона и плечи — 30 минут. Здесь чаще всего копится напряжение у тех, кто много сидит за компьютером и в телефоне." },
+    back:  { name: "спина",                   text: "Спина целиком: лопатки, середина спины и поясница — 30 минут." },
+    arms:  { name: "руки",                    text: "Руки — 30 минут. Кисти и предплечья: мышь, клавиатура, руль." },
+    legs:  { name: "ноги",                    text: "Ноги — 30 минут. Тяжесть в ногах к вечеру, после тренировки или долгого дня на ногах." },
+    head:  { name: "голова и лицо",           text: "К массажу тела — плюс 15 минут на голову. Отдельно — массаж лица, 60 минут." },
+    feet:  { name: "стопы",                   text: "Плюс 15 минут к любому массажу." },
+  };
+  const MAIN = ["shvz", "back", "arms", "legs"];
+  const FACE = { name: "Массаж лица", min: 60, price: "2 800 ₽" };
+  // Прайс оздоровительного массажа; 75 мин — середина между 60 и 90 (проверить у Ислама)
+  const PRICE = { 30: "2 100 ₽", 45: "2 400 ₽", 60: "3 100 ₽", 75: "3 800 ₽", 90: "4 500 ₽" };
+  const plan = (sel) => {
+    const main = MAIN.filter((z) => sel.includes(z)).length;
+    const head = sel.includes("head"), feet = sel.includes("feet");
+    if (!main && head && !feet) return FACE;
+    const base = main >= 2 ? 60 : 30; // одна зона или только стопы — 30 мин
+    const min = base + (head ? 15 : 0) + (feet && main ? 15 : 0);
+    const adds = [head && "голова +15 мин", feet && main && "стопы +15 мин"].filter(Boolean).join(", ");
+    const name = main >= 2 ? "Всё тело, кроме головы и стоп" : main ? "Оздоровительный массаж" : "Массаж стоп";
+    let note = adds ? `Включая: ${adds}` : "";
+    if (main >= 2 && main < 4) note = "За ту же цену — всё тело" + (adds ? `. ${note}` : "");
+    return { name, min, price: PRICE[min], note };
+  };
+
+  const chips = [...box.querySelectorAll(".zmap__chip")];
+  const hots = [...box.querySelectorAll(".zmap__hot")];
+  const about = document.getElementById("zmapAbout");
+  const result = document.getElementById("zmapResult");
+  const btn = document.getElementById("zmapBtn");
+  const sel = new Set();
+
+  const render = (last) => {
+    const list = Object.keys(ZONES).filter((z) => sel.has(z));
+    chips.forEach((c) => c.setAttribute("aria-pressed", String(sel.has(c.dataset.zone))));
+    hots.forEach((h) => h.classList.toggle("is-on", sel.has(h.dataset.zone)));
+    if (!list.length) {
+      about.textContent = "Нажмите на зону на силуэте или на кнопку выше.";
+      result.hidden = true;
+      btn.textContent = "Записаться в WhatsApp";
+      btn.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent("Здравствуйте! Хочу записаться на массаж. (сайт, карта)")}`;
+      return;
+    }
+    const z = ZONES[last && sel.has(last) ? last : list[list.length - 1]];
+    about.innerHTML = `<b>${z.name[0].toUpperCase() + z.name.slice(1)}.</b> ${z.text}`;
+    const p = plan(list);
+    document.getElementById("zmapName").textContent = p.name;
+    document.getElementById("zmapTime").textContent = `${p.min} мин`;
+    document.getElementById("zmapPrice").textContent = p.price;
+    document.getElementById("zmapNote").textContent = p.note || "";
+    result.hidden = false;
+    const names = (sel.has("full") ? list.filter((k) => !MAIN.includes(k)) : list).map((k) => ZONES[k].name).join(", ");
+    btn.textContent = `Записаться: ${p.min} мин за ${p.price}`;
+    const what = p === FACE ? "массаж лица 60 мин" : `массаж ${p.min} мин`;
+    const msg = `Здравствуйте! Карта напряжения: ${names}. Хочу ${what}. Подберите мастера и время. (сайт, карта)`;
+    btn.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+  };
+
+  const toggle = (zone) => {
+    const on = !sel.has(zone);
+    if (zone === "full") MAIN.concat("full").forEach((z) => on ? sel.add(z) : sel.delete(z));
+    else {
+      on ? sel.add(zone) : sel.delete(zone);
+      if (MAIN.includes(zone)) MAIN.every((z) => sel.has(z)) ? sel.add("full") : sel.delete("full");
+    }
+    render(zone); navigator.vibrate?.(8);
+  };
+  chips.forEach((c) => c.addEventListener("click", () => toggle(c.dataset.zone)));
+  hots.forEach((h) => h.addEventListener("click", () => toggle(h.dataset.zone)));
+})();

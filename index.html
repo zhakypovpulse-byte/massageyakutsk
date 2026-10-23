@@ -322,6 +322,10 @@
 
       <div class="hero__shade"></div>
 
+      <!-- «Оттаять»: иней на стекле, стирается пальцем/курсором и тает при прокрутке (script.js) -->
+      <canvas class="frost" id="frost" aria-hidden="true"></canvas>
+      <p class="frost__hint" id="frostHint" aria-hidden="true">Проведите по стеклу — оттает</p>
+
       <div class="hero__content" id="heroContent">
         <p class="temp" id="temp" hidden>
           <span class="temp__cold">За окном в Якутске <b id="tempOut">—</b></span>
@@ -368,6 +372,55 @@
           <p class="offer__note">По цене обычного сеанса. «Карта напряжения» и упражнение — подарок к первому визиту.</p>
           <a class="btn js-wa" href="#" data-msg="Здравствуйте! Хочу «Перезагрузку спины» — первый визит." data-src="оффер">Записаться за 3 100 ₽</a>
         </article>
+      </div>
+    </section>
+
+    <!-- ===== КАРТА НАПРЯЖЕНИЯ: выбор зон → время, цена, запись в WhatsApp (script.js) ===== -->
+    <section class="zmap" id="zones" aria-labelledby="zmapTitle">
+      <div class="zmap__head">
+        <h2 class="section-title" id="zmapTitle">Где у вас<br><em>напряжение?</em></h2>
+        <p class="zmap__lead">Отметьте зоны — покажем, сколько времени взять и сколько это стоит. Выбор уйдёт в WhatsApp, администратор подберёт мастера.</p>
+      </div>
+      <div class="zmap__grid">
+        <div class="zmap__body">
+          <svg class="zmap__svg" id="zmapSvg" viewBox="0 0 200 400" aria-hidden="true">
+            <defs>
+              <radialGradient id="zGlow"><stop offset="0" stop-color="#e8c49b" stop-opacity=".95"/><stop offset=".45" stop-color="#c8915a" stop-opacity=".45"/><stop offset="1" stop-color="#c8915a" stop-opacity="0"/></radialGradient>
+              <path id="zHalf" d="M92 66C91 72 90 76 88 80C76 83 58 85 46 95C38 102 35 114 35 128C35 150 33 175 31 200C30 215 29 228 28 240C27 250 29 258 33 258C37 258 38 250 38 242C39 226 41 208 44 190C46 172 48 156 50 140C52 165 55 190 58 210C56 228 54 246 56 262C58 300 62 340 66 388L90 388C92 350 96 310 100 280"/>
+            </defs>
+            <g class="zmap__line">
+              <ellipse cx="100" cy="38" rx="21" ry="26"/>
+              <use href="#zHalf"/>
+              <use href="#zHalf" transform="translate(200 0) scale(-1 1)"/>
+              <path class="zmap__spine" d="M100 84V262"/>
+              <path class="zmap__thin" d="M70 112C76 128 80 140 88 146M130 112C124 128 120 140 112 146"/>
+            </g>
+            <g class="zmap__hot" data-zone="head"><circle r="22" cx="100" cy="38"/></g>
+            <g class="zmap__hot" data-zone="shvz"><circle r="16" cx="100" cy="74"/><circle r="18" cx="60" cy="94"/><circle r="18" cx="140" cy="94"/></g>
+            <g class="zmap__hot" data-zone="back"><circle r="20" cx="80" cy="128"/><circle r="20" cx="120" cy="128"/><circle r="24" cx="100" cy="176"/><circle r="24" cx="100" cy="230"/></g>
+            <g class="zmap__hot" data-zone="arms"><circle r="16" cx="37" cy="160"/><circle r="16" cx="163" cy="160"/><circle r="14" cx="31" cy="225"/><circle r="14" cx="169" cy="225"/></g>
+            <g class="zmap__hot" data-zone="legs"><circle r="20" cx="76" cy="290"/><circle r="20" cx="124" cy="290"/><circle r="16" cx="78" cy="345"/><circle r="16" cx="122" cy="345"/></g>
+            <g class="zmap__hot" data-zone="feet"><circle r="12" cx="78" cy="386"/><circle r="12" cx="122" cy="386"/></g>
+          </svg>
+        </div>
+        <div class="zmap__side">
+          <div class="zmap__chips" role="group" aria-label="Зоны напряжения">
+            <button type="button" class="zmap__chip zmap__chip--all" data-zone="full" aria-pressed="false">Всё тело · 60 мин</button>
+            <button type="button" class="zmap__chip" data-zone="shvz" aria-pressed="false">Шея и плечи (ШВЗ) · 30</button>
+            <button type="button" class="zmap__chip" data-zone="back" aria-pressed="false">Спина · 30</button>
+            <button type="button" class="zmap__chip" data-zone="arms" aria-pressed="false">Руки · 30</button>
+            <button type="button" class="zmap__chip" data-zone="legs" aria-pressed="false">Ноги · 30</button>
+            <button type="button" class="zmap__chip zmap__chip--add" data-zone="head" aria-pressed="false">Голова и лицо</button>
+            <button type="button" class="zmap__chip zmap__chip--add" data-zone="feet" aria-pressed="false">Стопы · +15</button>
+          </div>
+          <p class="zmap__about" id="zmapAbout" aria-live="polite">Нажмите на зону на силуэте или на кнопку выше.</p>
+          <div class="zmap__result" id="zmapResult" hidden>
+            <div class="zmap__row"><span id="zmapName">Оздоровительный массаж</span><b id="zmapTime">60 мин</b></div>
+            <div class="zmap__price"><b id="zmapPrice">3 100 ₽</b><small id="zmapNote"></small></div>
+          </div>
+          <a class="btn js-wa zmap__btn" id="zmapBtn" href="#" data-src="карта" data-msg="Здравствуйте! Хочу записаться на массаж.">Записаться в WhatsApp</a>
+          <p class="zmap__fine">Это подсказка: программу мастер подберёт на месте после короткого разговора.</p>
+        </div>
       </div>
     </section>
 
