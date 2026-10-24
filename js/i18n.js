@@ -7,9 +7,9 @@
     offer_tag:    { sah: "Бастакы суруйтарыыга сыаната", en: "First visit" },
     services:     { sah: "Өҥө уонна сыана", en: "Services & prices" },
     nav_masters:  { sah: "Маастардар", en: "Masters" },
-    nav_reviews:  { en: "Reviews" },
+    nav_reviews:  { sah: "Сыанабыллар", en: "Reviews" },
     nav_video:    { sah: "Биидьийэ", en: "Video" },
-    nav_contacts: { en: "Contacts" },
+    nav_contacts: { sah: "Билсиһэр сибээс", en: "Contacts" },
     wa:           { sah: "Ватспапка суруттарыы", en: "Book on WhatsApp" },
     book:         { sah: "Суруттарыы", en: "Book" },
     book_this:    { sah: "Бу массааска суруйтарыы", en: "Book this massage" },
@@ -60,12 +60,21 @@
   // Слайды главного экрана: заголовок и текст
   const SLIDES = {
     1: {
-      sah: { title: "Дьокуускайга массаас кэнниттэн эт-сиин чэпчиир, сымныыр" },
+      sah: { title: "Дьокуускайга массаас кэнниттэн эт-сиин чэпчиир, сымныыр", text: "Моой, санны, көхсү: маастар ханна күүрүү баарын быһаарар уонна ол сирдэринэн чопчу үлэлиир. Эккит-сииңңит чэпчээн тахсагыт." },
       en: { title: "Massage in Yakutsk that leaves your body light", text: "Neck, shoulders, back: the master finds where tension has settled and works right there. You walk out feeling light." },
     },
-    2: { en: { title: "60 minutes that are all yours", text: "Silence, soft light, the master’s warm hands. You can leave your phone at reception." } },
-    3: { en: { title: "Masters who feel the body", text: "7 masters. Each was trained not only in technique but in hearing where you hold tension." } },
-    4: { en: { title: "Booking in one minute", text: "Tap “Book” and WhatsApp opens. We’ll find a master and a time that suits you." } },
+    2: {
+      sah: { title: "60 мүнүүтэни бэйэҕитигэр анаан", text: "Чуумпуга, сымнагас уокка, маастар сылаас илиилэригэр. Телефоңңутун киириигэ хаалларыаххытын сөп." },
+      en: { title: "60 minutes that are all yours", text: "Silence, soft light, the master’s warm hands. You can leave your phone at reception." },
+    },
+    3: {
+      sah: { title: "Эти-сиини билэр-көрөр маастардар", text: "7 маастар. Хас биирдилэрэ техникаҕа эрэ буолбакка, ханна быччың күүрэн тутан олорорун быһаарарга эмиэ үөрэммиттэрэ." },
+      en: { title: "Masters who feel the body", text: "7 masters. Each was trained not only in technique but in hearing where you hold tension." },
+    },
+    4: {
+      sah: { title: "1 мүнүүтэ иһигэр суруттарыы", text: "Whatsapp арыйарга, \"ватсапка суруттарыы\" баттаан. Маастары уонна табыгастаах бириэмэни сөп түбэһиннэрэн талыахпыт." },
+      en: { title: "Booking in one minute", text: "Tap “Book” and WhatsApp opens. We’ll find a master and a time that suits you." },
+    },
   };
 
   const LANGS = ["ru", "sah", "en"];
