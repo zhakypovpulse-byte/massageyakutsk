@@ -588,7 +588,7 @@ document.querySelectorAll(".master__flip").forEach((btn) => {
     if (!list.length) {
       about.textContent = "Нажмите на зону на силуэте или на кнопку выше.";
       result.hidden = true;
-      btn.textContent = "Записаться в WhatsApp";
+      btn.textContent = window.t ? t("wa", "Записаться в WhatsApp") : "Записаться в WhatsApp";
       btn.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent("Здравствуйте! Хочу записаться на массаж. (сайт, карта)")}`;
       return;
     }
