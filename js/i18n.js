@@ -159,7 +159,9 @@
     setTimeout(hideHint, 10000);
   }
 
-  // Сайт всегда открывается на русском; другой язык — только по ссылке ?lang=sah или ?lang=en
-  const saved = new URLSearchParams(location.search).get("lang");
-  if (saved && saved !== "ru") { apply(saved); hideHint(); }
+  // Первый визит — на русском; дальше сайт помнит выбранный язык. Ссылка ?lang=sah или ?lang=en важнее памяти
+  let saved = new URLSearchParams(location.search).get("lang");
+  if (!saved) { try { saved = localStorage.getItem("lang"); } catch (e) {} }
+  if (saved) hideHint();
+  if (saved && saved !== "ru") apply(saved);
 })();
