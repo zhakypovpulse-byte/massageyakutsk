@@ -571,7 +571,8 @@ document.querySelectorAll(".master__flip").forEach((btn) => {
     const name = main >= 2 ? "Всё тело, кроме головы и стоп" : main ? "Оздоровительный массаж" : "Массаж стоп";
     let note = adds ? `Включая: ${adds}` : "";
     if (main >= 2 && main < 4) note = "За ту же цену — всё тело" + (adds ? `. ${note}` : "");
-    return { name, min, price: PRICE[min], note };
+    const key = main >= 2 ? "z_body" : main === 1 ? "z_health" : "";
+    return { name, key, min, price: PRICE[min], note };
   };
 
   const chips = [...box.querySelectorAll(".zmap__chip")];
@@ -581,7 +582,16 @@ document.querySelectorAll(".master__flip").forEach((btn) => {
   const btn = document.getElementById("zmapBtn");
   const sel = new Set();
 
+  // Текст на языке сайта (js/i18n.js); в WhatsApp уходит по-русски
+  const tr = (key, ru) => (window.t ? t(key, ru) : ru);
+  const rub = (price) => price.replace("₽", tr("u_rub", "₽"));
+  const ZONE_KEYS = { full: ["z_full_name", "z_full_text"], shvz: ["z_shvz_name", "z_shvz_text"] };
+  const zoneTitle = (k) => tr((ZONE_KEYS[k] || [])[0], ZONES[k].name[0].toUpperCase() + ZONES[k].name.slice(1));
+  const zoneText = (k) => tr((ZONE_KEYS[k] || [])[1], ZONES[k].text);
+  let lastZone;
+
   const render = (last) => {
+    lastZone = last;
     const list = Object.keys(ZONES).filter((z) => sel.has(z));
     chips.forEach((c) => c.setAttribute("aria-pressed", String(sel.has(c.dataset.zone))));
     hots.forEach((h) => h.classList.toggle("is-on", sel.has(h.dataset.zone)));
@@ -592,20 +602,22 @@ document.querySelectorAll(".master__flip").forEach((btn) => {
       btn.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent("Здравствуйте! Хочу записаться на массаж. (сайт, карта)")}`;
       return;
     }
-    const z = ZONES[last && sel.has(last) ? last : list[list.length - 1]];
-    about.innerHTML = `<b>${z.name[0].toUpperCase() + z.name.slice(1)}.</b> ${z.text}`;
+    const zk = last && sel.has(last) ? last : list[list.length - 1];
+    about.innerHTML = `<b>${zoneTitle(zk)}.</b> ${zoneText(zk)}`;
     const p = plan(list);
-    document.getElementById("zmapName").textContent = p.name;
-    document.getElementById("zmapTime").textContent = `${p.min} мин`;
-    document.getElementById("zmapPrice").textContent = p.price;
+    document.getElementById("zmapName").textContent = p === FACE || !p.key ? p.name : tr(p.key, p.name);
+    document.getElementById("zmapTime").textContent = `${p.min} ${tr("u_min", "мин")}`;
+    document.getElementById("zmapPrice").textContent = rub(p.price);
     document.getElementById("zmapNote").textContent = p.note || "";
     result.hidden = false;
     const names = (sel.has("full") ? list.filter((k) => !MAIN.includes(k)) : list).map((k) => ZONES[k].name).join(", ");
-    btn.textContent = `Записаться: ${p.min} мин за ${p.price}`;
+    btn.textContent = tr("z_btn", "Записаться: {min} мин за {price}").replace("{min}", p.min).replace("{price}", rub(p.price));
     const what = p === FACE ? "массаж лица 60 мин" : `массаж ${p.min} мин`;
     const msg = `Здравствуйте! Карта напряжения: ${names}. Хочу ${what}. Подберите мастера и время. (сайт, карта)`;
     btn.href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
   };
+
+  document.addEventListener("langchange", () => render(lastZone));
 
   const toggle = (zone) => {
     const on = !sel.has(zone);

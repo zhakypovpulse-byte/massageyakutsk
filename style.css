@@ -103,6 +103,9 @@ p { margin: 0; }
 .lang__menu { position: absolute; top: calc(100% + 8px); right: 0; min-width: 150px; padding: 6px; background: rgba(22, 18, 15, .96); border: 1px solid rgba(242, 233, 223, .14); border-radius: 14px; box-shadow: 0 12px 30px rgba(0, 0, 0, .4); }
 .lang__menu button { display: block; width: 100%; text-align: left; font: 600 14px/1 inherit; font-family: inherit; color: var(--sand); background: none; border: 0; border-radius: 9px; padding: 11px 12px; cursor: pointer; transition: color .3s, background .3s; }
 .lang__menu button[aria-pressed="true"] { color: var(--amber); }
+.lang__hint { position: absolute; top: calc(100% + 10px); right: 0; white-space: nowrap; font: 600 12px/1 inherit; font-family: inherit; color: var(--night); background: var(--amber); border: 0; border-radius: 999px; padding: 8px 12px; cursor: pointer; box-shadow: 0 8px 20px rgba(0, 0, 0, .35); transition: opacity .4s, transform .4s; }
+.lang__hint::before { content: ""; position: absolute; top: -5px; right: 18px; border: 5px solid transparent; border-top: 0; border-bottom-color: var(--amber); }
+.lang__hint.is-hidden { opacity: 0; transform: translateY(-4px); pointer-events: none; }
 @media (hover: hover) { .lang__btn:hover { border-color: var(--amber); } .lang__menu button:hover { color: var(--linen); background: rgba(242, 233, 223, .06); } }
 @media (max-width: 820px) { .header { gap: 10px; } .lang__btn { padding: 9px 12px; } }
 .burger { display: none; width: 44px; height: 44px; border: 0; background: none; padding: 0; cursor: pointer; position: relative; z-index: 2; }

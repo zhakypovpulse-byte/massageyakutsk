@@ -50,6 +50,34 @@
     s_feet:       { sah: "Тилэх илбийиитэ", en: "Foot massage" },
     s_head:       { sah: "Төбөнү илбийии", en: "Head massage" },
     s_back:       { sah: "Көхсү уонна моой илбийиитэ", en: "Back and neck" },
+    // Дополнения к массажу: черновик Claude, ждёт проверки преподавателя
+    a_title:      { sah: "Илбийиигэ <em>эбии</em>", en: "Massage <em>add-ons</em>" },
+    a_feet:       { sah: "Күнү быһа атах үрдүгэр сылдьыбыт кэннэ чэпчэтэр", en: "Lightness after a day on your feet" },
+    a_hands_t:    { sah: "Илии илбийиитэ", en: "Hand massage" },
+    a_hands:      { sah: "Компьютерга олорон үлэлээбит илиилэргэ", en: "For hands after working at a computer" },
+    a_cups_t:     { sah: "Баанканан илбийии", en: "Cupping massage" },
+    a_cups:       { sah: "Күүстээҕи сөбүлүүргэ — көхсү дириҥник илбийии", en: "Deep work on the back for those who like it stronger" },
+    a_head:       { sah: "Сынньатар, санааны чэпчэтэр", en: "Helps you relax and switch off" },
+    a_neck_t:     { sah: "Моой уонна санны", en: "Neck and collar zone" },
+    a_neck:       { sah: "Санныта «таас» курдук буолбуттарга", en: "For shoulders that feel like stone" },
+    // Карта напряжения: перевод преподавателя
+    z_chip_full:  { sah: "Бүтүн эт-сиин · 60 мүн" },
+    z_chip_shvz:  { sah: "Моой уонна санны үрдэ (шейно-воротниковая зона)" },
+    z_chip_back:  { sah: "Сис · 30" },
+    z_chip_arms:  { sah: "Илии · 30" },
+    z_chip_legs:  { sah: "Атах · 30" },
+    z_chip_head:  { sah: "Төбө уонна сирэй" },
+    z_chip_feet:  { sah: "Уллуңнар +15 мүн" },
+    z_full_name:  { sah: "Бүтүн эт-сиин" },
+    z_full_text:  { sah: "Бүтүн эт-сиин, төбө уонна уллуҥ өттүттэн ураты — 60 мүнүүтэ: моой уонна санны үрдэ, сис, илии, атах." },
+    z_body:       { sah: "Бүтүн эт-сиин, төбө уонна уллуҥ өттүттэн ураты" },
+    z_fine:       { sah: "Көмө сурук: маастар кылгас кэпсэтии кэнниттэн бырагыраамманы талан биэриэ." },
+    z_shvz_name:  { sah: "Моой уонна санны үрдэ" },
+    z_shvz_text:  { sah: "Моой, санны үрдэ уонна сарын — 30 мүнүүтэ. Көмпүүтэр иннигэр уонна төлөпүөҥҥэ уһуннук олорор дьон тыҥааһына саамай барытыттан ордук манна мунньуллар." },
+    z_health:     { sah: "Чэбдигирдэр (доруобуйаны тупсарар) илбийии", en: "Wellness massage" },
+    z_btn:        { sah: "Суруттарыы: {min} мүнүүтэ {price}га", en: "Book: {min} min for {price}" },
+    u_min:        { sah: "мүнүүтэ", en: "min" },
+    u_rub:        { sah: "солкуобай" },
     c_addr:       { sah: "Аадырыс", en: "Address" },
     c_hours:      { en: "Hours" },
     c_daily:      { sah: "Күн ахсын", en: "Daily" },
@@ -110,6 +138,7 @@
       if (b.dataset.lang === lang) document.getElementById("langCur").textContent = b.dataset.short;
     });
     try { localStorage.setItem("lang", lang); } catch (e) {}
+    document.dispatchEvent(new Event("langchange"));
   };
 
   // Одна кнопка: по нажатию открывается список языков
@@ -121,7 +150,16 @@
   document.addEventListener("click", (e) => { if (!menu.hidden && !e.target.closest("#lang")) toggle(false); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !menu.hidden) { toggle(false); btn.focus(); } });
 
-  let saved = new URLSearchParams(location.search).get("lang");
-  if (!saved) { try { saved = localStorage.getItem("lang"); } catch (e) {} }
-  if (saved && saved !== "ru") apply(saved);
+  // Плашка под кнопкой: подсказывает, что есть саха и английский; прячется после выбора или через 10 с
+  const hint = document.getElementById("langHint");
+  const hideHint = () => hint && hint.classList.add("is-hidden");
+  if (hint) {
+    hint.addEventListener("click", (e) => { e.stopPropagation(); hideHint(); toggle(true); });
+    btn.addEventListener("click", hideHint);
+    setTimeout(hideHint, 10000);
+  }
+
+  // Сайт всегда открывается на русском; другой язык — только по ссылке ?lang=sah или ?lang=en
+  const saved = new URLSearchParams(location.search).get("lang");
+  if (saved && saved !== "ru") { apply(saved); hideHint(); }
 })();
