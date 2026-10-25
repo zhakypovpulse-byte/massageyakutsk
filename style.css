@@ -323,6 +323,9 @@ p { margin: 0; }
 .master__info div { display: flex; gap: 8px; font-size: 13px; line-height: 1.35; }
 .master__info dt { color: var(--honey); font-weight: 700; min-width: 66px; }
 .master__info dd { margin: 0; color: var(--linen); }
+.master__quote { margin: 12px 0 0; padding-top: 10px; border-top: 1px solid var(--line); }
+.master__quote p { font: italic 500 16px/1.35 var(--serif); color: var(--linen); margin: 0 0 6px; }
+.master__quote cite { font-style: normal; color: var(--honey); font-size: 12px; }
 .master figcaption { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 4px; }
 .master b { font: 700 28px/1.1 var(--serif); }
 .master span { color: var(--sand); font-size: 14px; }
