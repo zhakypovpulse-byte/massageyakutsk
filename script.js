@@ -82,26 +82,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
   }).observe(document.querySelector(".hero"));
 })();
 
-/* ===== Ролики «Как мы работаем»: грузятся и играют только на экране ===== */
-(() => {
-  const reels = [...document.querySelectorAll(".reel")];
-  if (reduceMotion || saveData || !("IntersectionObserver" in window)) return; // только постеры
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      const fig = e.target;
-      const v = fig.querySelector("video");
-      if (e.isIntersecting) {
-        if (!v.src) v.src = v.dataset.src;
-        v.play().then(() => fig.classList.add("is-playing")).catch(() => {});
-      } else {
-        v.pause();
-        fig.classList.remove("is-playing");
-      }
-    });
-  }, { threshold: 0.35 });
-  reels.forEach((r) => io.observe(r));
-})();
-
 /* ===== Главный экран: тексты сменяются по кругу ===== */
 (() => {
   const slides = [...document.querySelectorAll(".hero__slide")];
@@ -436,22 +416,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
 
   window.addEventListener("resize", () => layout());
   layout();
-})();
-
-/* ===== Задвижка с роликами «Как мы работаем» ===== */
-(() => {
-  const btn = document.querySelector(".reels__toggle");
-  const drawer = document.getElementById("reelsDrawer");
-  if (!btn || !drawer) return;
-  const label = btn.querySelector(".reels__toggle-text");
-  btn.addEventListener("click", () => {
-    const open = !drawer.classList.contains("is-open");
-    drawer.classList.toggle("is-open", open);
-    drawer.inert = !open;
-    btn.setAttribute("aria-expanded", String(open));
-    label.textContent = open ? "Свернуть видео" : "Смотреть, как проходит сеанс";
-    if (!open) drawer.querySelectorAll("video").forEach((v) => v.pause());
-  });
 })();
 
 /* ===== Мастера: нажатие на фото переворачивает на сертификат ===== */
