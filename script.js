@@ -182,8 +182,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
   const frostEl = document.getElementById("frost");
   const contacts = document.getElementById("contacts");
   const contactsImg = document.querySelector(".contacts__bg img");
-  const reelsBox = document.getElementById("reels");
-  const reelCards = [...reelsBox.querySelectorAll(".reel")];
 
   const film = document.getElementById("story");
   const stage = document.getElementById("filmStage");
@@ -199,7 +197,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
     ctaInView = ctaSeen.size > 0;
     request();
   }, { rootMargin: "0px 0px -90px 0px" });
-  document.querySelectorAll(".offer .btn, .reels__cta .btn, .zmap__btn").forEach((b) => ctaIO.observe(b));
+  document.querySelectorAll(".offer .btn, .zmap__btn").forEach((b) => ctaIO.observe(b));
 
   let ticking = false;
 
@@ -249,13 +247,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
       });
       stage.style.setProperty("--warm", t.toFixed(3));
       stage.style.setProperty("--fp", t.toFixed(4));
-    }
-
-    // Ролики на ПК: соседние карточки едут с разной скоростью
-    const rr = reelsBox.getBoundingClientRect();
-    if (!isPhone() && rr.top < vh && rr.bottom > 0) {
-      const k = (rr.top + rr.height / 2 - vh / 2) / vh;
-      reelCards.forEach((c, i) => c.style.setProperty("--ry", `${(k * (i % 2 ? 70 : -30)).toFixed(1)}px`));
     }
 
     // Контакты: фон плывёт медленнее страницы
