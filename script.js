@@ -586,3 +586,24 @@ document.querySelectorAll(".master__flip").forEach((btn) => {
   chips.forEach((c) => c.addEventListener("click", () => toggle(c.dataset.zone)));
   hots.forEach((h) => h.addEventListener("click", () => toggle(h.dataset.zone)));
 })();
+
+// Ожившие фото мастеров: наведение на компьютере, появление на экране на телефоне
+(() => {
+  const vids = [...document.querySelectorAll(".master__live")];
+  if (!vids.length || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const play = (v) => { v.currentTime = 0; v.play().then(() => v.classList.add("is-on")).catch(() => {}); };
+  const stop = (v) => { v.classList.remove("is-on"); v.pause(); };
+  vids.forEach((v) => v.addEventListener("ended", () => stop(v)));
+  if (matchMedia("(hover: hover)").matches) {
+    vids.forEach((v) => {
+      const card = v.closest(".master");
+      card.addEventListener("mouseenter", () => play(v));
+      card.addEventListener("mouseleave", () => stop(v));
+    });
+  } else {
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting) play(e.target); else stop(e.target);
+    }), { threshold: 0.6 });
+    vids.forEach((v) => io.observe(v));
+  }
+})();
