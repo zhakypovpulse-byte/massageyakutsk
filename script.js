@@ -8,7 +8,6 @@ const CONFIG = {
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-const ease = (t) => t * t * (3 - 2 * t); // мягкий старт и финиш
 const isPhone = () => window.innerWidth <= 820;
 const saveData = navigator.connection?.saveData === true;
 
@@ -183,11 +182,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
   const contacts = document.getElementById("contacts");
   const contactsImg = document.querySelector(".contacts__bg img");
 
-  const film = document.getElementById("story");
-  const stage = document.getElementById("filmStage");
-  const fImgs = [...film.querySelectorAll(".film__img")];
-  const fTexts = [...film.querySelectorAll(".film__text")];
-  const n = fImgs.length;
 
   // Если на экране уже видна большая кнопка записи — панель уходит, чтобы не было двух кнопок сразу
   let ctaInView = false;
@@ -225,30 +219,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
       frostEl?.style.setProperty("--hp", hp.toFixed(4));
     }
 
-    // История: кадры перетекают друг в друга, холод сменяется теплом
-    const r = film.getBoundingClientRect();
-    if (r.top < vh && r.bottom > 0) {
-      const t = clamp(-r.top / (r.height - stage.offsetHeight));
-      const p = t * (n - 1);
-      fImgs.forEach((img, i) => {
-        const appear = i === 0 ? 1 : ease(clamp(p - (i - 1)));
-        const settle = clamp(p - i + 1, 0, 2) / 2;
-        const scale = 1.16 - 0.1 * appear - 0.06 * settle;
-        const shift = (1 - appear) * 6;
-        img.style.opacity = appear.toFixed(3);
-        img.style.transform = `translate3d(0, ${shift.toFixed(2)}%, 0) scale(${scale.toFixed(4)})`;
-      });
-      fTexts.forEach((el, i) => {
-        const d = p - i;
-        const o = clamp(1 - Math.abs(d) * 2.2);
-        el.style.opacity = o.toFixed(3);
-        el.style.transform = `translate3d(0, ${(-d * 46).toFixed(1)}px, 0)`;
-        el.style.visibility = o > 0.01 ? "visible" : "hidden";
-      });
-      stage.style.setProperty("--warm", t.toFixed(3));
-      stage.style.setProperty("--fp", t.toFixed(4));
-    }
-
     // Контакты: фон плывёт медленнее страницы
     if (cRect.top < vh && cRect.bottom > 0) {
       const cp = (cRect.top + cRect.height / 2 - vh / 2) / vh;
@@ -262,9 +232,60 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
   frame();
 })();
 
+/* ===== История: плюсик раскрывает, иначе листаем дальше ===== */
+(() => {
+  const btn = document.getElementById("storyToggle");
+  const body = document.getElementById("storyBody");
+  if (!btn || !body) return;
+  btn.addEventListener("click", () => {
+    const open = btn.getAttribute("aria-expanded") !== "true";
+    btn.setAttribute("aria-expanded", open);
+    body.classList.toggle("is-open", open);
+    body.inert = !open;
+    // Lenis должен узнать новую высоту страницы после раскрытия
+    setTimeout(() => lenis?.resize(), 650);
+  });
+})();
+
+/* ===== Заголовки секций: слова выезжают из-под маски, как на главном экране ===== */
+(() => {
+  const titles = document.querySelectorAll(".section-title");
+  if (reduceMotion || !("IntersectionObserver" in window)) return;
+  // режем текст на слова, <br> и <em> не трогаем; после смены языка i18n вернёт обычный текст — он просто виден
+  const split = (node) => {
+    [...node.childNodes].forEach((n) => {
+      if (n.nodeType === 1) { if (n.tagName !== "BR") split(n); return; }
+      if (n.nodeType !== 3 || !n.textContent.trim()) return;
+      const frag = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach((part) => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { frag.append(" "); return; }
+        const w = document.createElement("span");
+        w.className = "w";
+        w.innerHTML = "<span></span>";
+        w.firstChild.textContent = part;
+        frag.append(w);
+      });
+      n.replaceWith(frag);
+    });
+  };
+  titles.forEach((t) => {
+    split(t);
+    t.querySelectorAll(".w > span").forEach((s, i) => { s.style.transitionDelay = `${i * 70}ms`; });
+    t.classList.add("is-split");
+  });
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("is-in");
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.3, rootMargin: "0px 0px -8% 0px" });
+  titles.forEach((t) => io.observe(t));
+})();
+
 /* ===== Появление блоков ===== */
 (() => {
-  document.querySelectorAll(".section-title").forEach((t) => t.classList.add("reveal"));
   const els = document.querySelectorAll(".reveal");
   if (reduceMotion || !("IntersectionObserver" in window)) { els.forEach((el) => el.classList.add("is-in")); return; }
   const io = new IntersectionObserver((entries) => {
