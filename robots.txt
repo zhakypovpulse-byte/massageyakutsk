@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://massageyakutsk.ru/sitemap.xml
+Sitemap: https://zhakypovpulse-byte.github.io/massageyakutsk/sitemap.xml

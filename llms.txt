@@ -11,8 +11,8 @@
 - Первый визит: «Перезагрузка спины» — 60 мин за 3 100 ₽, «Карта напряжения» и упражнение для офиса в подарок
 
 ## Ссылки
-- Сайт: https://massageyakutsk.ru/
-- Услуги и цены: https://massageyakutsk.ru/#services
-- Карта напряжения (подбор по зонам): https://massageyakutsk.ru/#zones
+- Сайт: https://zhakypovpulse-byte.github.io/massageyakutsk/
+- Услуги и цены: https://zhakypovpulse-byte.github.io/massageyakutsk/#services
+- Карта напряжения (подбор по зонам): https://zhakypovpulse-byte.github.io/massageyakutsk/#zones
 - 2GIS: https://2gis.ru/yakutsk/firm/70000001106117834
 - Instagram: https://instagram.com/massage.ykt

@@ -348,14 +348,9 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
       const rect = c.getBoundingClientRect();
       const offset = (rect.left + rect.width / 2 - focus) / vw;
       c.style.setProperty("--px", `${(-10 - offset * 12).toFixed(2)}%`);
-      if (isPhone() && !reduceMotion) {
-        const k = Math.min(Math.abs(offset) * 1.4, 1);
-        c.style.setProperty("--s", (1 - k * 0.07).toFixed(3));
-        c.style.setProperty("--o", (1 - k * 0.4).toFixed(3));
-      } else {
-        c.style.setProperty("--s", "1");
-        c.style.setProperty("--o", "1");
-      }
+      // текст не масштабируем — иначе буквы дрожат при свайпе; соседние карточки только приглушаем
+      const k = isPhone() && !reduceMotion ? Math.min(Math.abs(offset) * 1.4, 1) : 0;
+      c.style.setProperty("--o", (1 - k * 0.3).toFixed(3));
     });
   };
   const request = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
