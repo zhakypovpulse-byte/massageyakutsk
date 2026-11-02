@@ -1,4 +1,21 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://zhakypovpulse-byte.github.io/massageyakutsk/sitemap.xml
+# Поисковики и ИИ-ассистенты: Яндекс (Поиск, Нейро, Алиса), Google (Поиск, Gemini), ChatGPT, Claude, Perplexity
+User-agent: Yandex
+User-agent: YandexAdditional
+User-agent: YandexAdditionalBot
+User-agent: Googlebot
+User-agent: Google-Extended
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://massageykt.ru/sitemap.xml
