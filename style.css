@@ -773,3 +773,5 @@ html.lenis, html.lenis body { height: auto; }
 @media (prefers-reduced-motion: reduce) { .zmap__hot.is-on circle { animation: none; } }
 .zmap__chip--all { border-color: rgba(200,145,90,.55); color: var(--honey); }
 .zmap__chip--add { border-style: dashed; }
+
+.master__more { display: inline-block; margin-top: 12px; color: var(--amber); font-size: 14px; text-decoration: none; border-bottom: 1px solid currentColor; }

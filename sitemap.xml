@@ -25,4 +25,10 @@
     <image:image><image:loc>https://massageykt.ru/img/ozdorovitelnyy-massazh-yakutsk.jpg</image:loc></image:image>
     <image:image><image:loc>https://massageykt.ru/img/sportivnyy-massazh-yakutsk.jpg</image:loc></image:image>
   </url>
+  <url>
+    <loc>https://massageykt.ru/islam</loc>
+    <lastmod>2026-11-02</lastmod>
+    <priority>0.8</priority>
+    <image:image><image:loc>https://massageykt.ru/img/massazhist-yakutsk-islam.jpg</image:loc></image:image>
+  </url>
 </urlset>
