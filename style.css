@@ -448,6 +448,17 @@ p { margin: 0; }
 .faq__item summary::after { content: "+"; position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font: 300 30px/1 var(--sans); color: var(--amber); transition: transform .4s var(--ease-out); }
 .faq__item[open] summary::after { transform: translateY(-50%) rotate(45deg); }
 .faq__item p { color: var(--sand); padding: 0 0 22px; max-width: 720px; }
+.faq__item p + p { margin-top: -10px; }
+.faq__item p b { color: var(--honey); font-weight: 600; }
+
+/* Подробнее в карточках услуг и дополнениях */
+.service__more { border-top: 1px solid var(--line); padding-top: 10px; }
+.service__more summary { list-style: none; cursor: pointer; color: var(--amber); font-size: 14px; letter-spacing: .06em; text-transform: uppercase; position: relative; padding-right: 22px; width: max-content; }
+.service__more summary::-webkit-details-marker { display: none; }
+.service__more summary::after { content: "+"; position: absolute; right: 0; top: 50%; transform: translateY(-50%); font: 300 20px/1 var(--sans); transition: transform .4s var(--ease-out); }
+.service__more[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+.service .service__more p, .addons .service__more p { flex: none; font-size: 14px; line-height: 1.55; color: var(--sand); margin: 10px 0 0; }
+.service__more p b { color: var(--honey); font-weight: 600; }
 
 /* ===== Контакты ===== */
 .contacts { position: relative; min-height: 90vh; display: flex; align-items: center; padding: clamp(80px, 10vw, 140px) var(--pad); overflow: hidden; }
