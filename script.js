@@ -178,7 +178,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
   const heroPar = document.getElementById("heroParallax");
   const heroContent = document.getElementById("heroContent");
   const heroControls = document.querySelector(".hero__controls");
-  const frostEl = document.getElementById("frost");
   const contacts = document.getElementById("contacts");
   const contactsImg = document.querySelector(".contacts__bg img");
 
@@ -216,7 +215,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu
       heroPar.style.setProperty("--hp", hp.toFixed(4));
       heroContent.style.setProperty("--hp", hp.toFixed(4));
       heroControls.style.setProperty("--hp", hp.toFixed(4));
-      frostEl?.style.setProperty("--hp", hp.toFixed(4));
     }
 
     // Контакты: фон плывёт медленнее страницы
@@ -433,85 +431,6 @@ document.querySelectorAll(".master__flip").forEach((btn) => {
     btn.setAttribute("aria-pressed", String(on));
   });
 });
-
-/* ===== «Оттаять»: иней на стекле главного экрана ===== */
-(() => {
-  const cv = document.getElementById("frost");
-  const hint = document.getElementById("frostHint");
-  const hero = document.querySelector(".hero");
-  const month = new Date().getMonth(); // 0 — январь
-  const winter = month >= 9 || month <= 3; // октябрь–апрель
-  if (!cv || !winter || reduceMotion || saveData) return;
-
-  const ctx = cv.getContext("2d");
-  const scale = isPhone() ? 0.5 : 0.6; // рисуем в пониженном разрешении: дёшево и мягче
-  let W = 0, H = 0;
-
-  // Кристалл: ветка, от которой расходятся боковые иголки
-  const branch = (x, y, ang, len, depth) => {
-    const x2 = x + Math.cos(ang) * len, y2 = y + Math.sin(ang) * len;
-    ctx.lineWidth = Math.max(0.6, depth * 0.7);
-    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x2, y2); ctx.stroke();
-    if (depth <= 0 || len < 4) return;
-    const steps = 3 + (Math.random() * 3) | 0;
-    for (let i = 1; i <= steps; i++) {
-      const t = i / (steps + 1), bx = x + (x2 - x) * t, by = y + (y2 - y) * t, l = len * (0.28 + Math.random() * 0.22);
-      branch(bx, by, ang + 0.9 + Math.random() * 0.3, l, depth - 1);
-      branch(bx, by, ang - 0.9 - Math.random() * 0.3, l, depth - 1);
-    }
-  };
-
-  const paint = () => {
-    cv.classList.add("is-on"); // сначала показать, иначе размер холста = 0
-    W = cv.width = Math.round(cv.clientWidth * scale);
-    H = cv.height = Math.round(cv.clientHeight * scale);
-    ctx.globalCompositeOperation = "source-over";
-    ctx.clearRect(0, 0, W, H);
-    // матовая дымка
-    const g = ctx.createRadialGradient(W * 0.34, H * 0.66, Math.min(W, H) * 0.2, W * 0.5, H * 0.5, Math.max(W, H) * 0.75);
-    g.addColorStop(0, "rgba(200,222,236,0)"); g.addColorStop(1, "rgba(214,232,244,.30)");
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-    // изморось
-    for (let i = 0; i < (W * H) / 90; i++) {
-      ctx.fillStyle = `rgba(236,246,255,${(Math.random() * 0.35).toFixed(2)})`;
-      ctx.fillRect(Math.random() * W, Math.random() * H, 1, 1);
-    }
-    // узоры растут от краёв стекла внутрь
-    ctx.strokeStyle = "rgba(238,247,255,.24)"; ctx.lineCap = "round";
-    const n = isPhone() ? 18 : 22;
-    for (let i = 0; i < n; i++) {
-      const side = i % 4, r = Math.random();
-      const x = side === 0 ? r * W : side === 1 ? W : side === 2 ? r * W : 0;
-      const y = side === 0 ? 0 : side === 1 ? r * H : side === 2 ? H : r * H;
-      const inward = Math.atan2(H * 0.55 - y, W * 0.4 - x) + (Math.random() - 0.5) * 0.9;
-      branch(x, y, inward, Math.min(W, H) * (0.10 + Math.random() * 0.12), 3);
-    }
-  };
-
-  // Стираем иней: мягкая кисть «вырезает» узор
-  let wiped = 0;
-  const wipe = (cx, cy) => {
-    const r = cv.getBoundingClientRect();
-    const x = (cx - r.left) * scale, y = (cy - r.top) * scale, R = (isPhone() ? 46 : 64) * scale;
-    ctx.globalCompositeOperation = "destination-out";
-    const b = ctx.createRadialGradient(x, y, 0, x, y, R);
-    b.addColorStop(0, "rgba(0,0,0,.9)"); b.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = b; ctx.beginPath(); ctx.arc(x, y, R, 0, Math.PI * 2); ctx.fill();
-    if (++wiped === 12) hint.classList.remove("is-in");
-  };
-  hero.addEventListener("pointermove", (e) => { if (e.pointerType === "mouse") wipe(e.clientX, e.clientY); }, { passive: true });
-  hero.addEventListener("touchmove", (e) => { for (const t of e.touches) wipe(t.clientX, t.clientY); }, { passive: true });
-  hero.addEventListener("touchstart", (e) => { for (const t of e.touches) wipe(t.clientX, t.clientY); }, { passive: true });
-
-  const start = () => {
-    paint();
-    setTimeout(() => hint.classList.add("is-in"), 1800);
-    setTimeout(() => hint.classList.remove("is-in"), 9000);
-  };
-  // после загрузки страницы, чтобы не мешать видео и первому экрану
-  if (document.readyState === "complete") start(); else window.addEventListener("load", start, { once: true });
-  let rw; window.addEventListener("resize", () => { clearTimeout(rw); rw = setTimeout(paint, 300); });
-})();
 
 /* ===== Карта напряжения: зоны → время, цена, текст в WhatsApp ===== */
 (() => {
