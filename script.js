@@ -4,7 +4,30 @@ const CONFIG = {
   whatsapp: "79963153101",
   slideDuration: 7000, // сколько держится один слайд, мс
   city: { lat: 62.03, lon: 129.73 }, // Якутск, для температуры за окном
+  // [ЗАМЕНИТЬ] номер счётчика Яндекс Метрики (только цифры). Пусто — Метрика выключена
+  metrika: "",
 };
+
+/* ===== Яндекс Метрика: грузим после страницы, цели — клики по записи ===== */
+const goal = (name) => { if (CONFIG.metrika && window.ym) window.ym(Number(CONFIG.metrika), "reachGoal", name); };
+if (CONFIG.metrika) {
+  window.addEventListener("load", () => {
+    window.ym = window.ym || function () { (window.ym.a = window.ym.a || []).push(arguments); };
+    window.ym.l = Date.now();
+    const s = document.createElement("script");
+    s.async = true; s.src = "https://mc.yandex.ru/metrika/tag.js";
+    document.head.appendChild(s);
+    window.ym(Number(CONFIG.metrika), "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true });
+  }, { once: true });
+  // один обработчик на всю страницу: WhatsApp, звонок, 2GIS
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a[href]");
+    if (!a) return;
+    if (a.classList.contains("js-wa") || a.href.includes("wa.me")) goal("whatsapp");
+    else if (a.href.startsWith("tel:")) goal("phone");
+    else if (a.href.includes("2gis.ru")) goal("2gis");
+  }, { passive: true });
+}
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
